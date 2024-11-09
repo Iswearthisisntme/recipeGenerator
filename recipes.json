@@ -1,0 +1,839 @@
+{
+  "globalOptions": {
+    "validIceLevels": [
+      100,
+      75,
+      50,
+      25,
+      0
+    ],
+    "validSugarLevels": [
+      100,
+      75,
+      50,
+      25,
+      0
+    ],
+    "validToppings": [
+      "Aloe",
+      "Coconut Jelly",
+      "Greentea Jelly",
+      "Blue butterfly boba",
+      "White boba",
+      "Brown Sugar boba"
+    ]
+  },
+  "globalAdjustments": {
+    "milk": 25,
+    "flowerTea": 25,
+    "sugar": 5,
+    "syrup": 5,
+    "juice": 25
+  },
+  "baseFormat": "{toppings} {build} {iceStep} {base}",
+  "baseBuilds": {
+    "milkTea": "{milk}ml Milk + {sugar}ml Cane Sugar",
+    "flowerMilkTea": "{flowerTea}ml {flowerType} tea + {sugar}ml Cane Sugar",
+    "fruitTea": "{fruits} -> {syrup}ml {syrupName} syrup + {sugar}ml No.2 Sugar",
+    "floralTea": "{flowerTea}ml {flowerType} tea + {sugar}ml {sugarType}",
+    "floralTeaLemon": "Add Lime Slice -> {flowerTea}ml {flowerType} tea + {syrup}ml Lime Juice  + {sugar}ml Honey",
+    "floralTeaDouble": "Add Lime Slice -> {flowerTea}ml {flowerName} tea + {secondaryFlowerTea}ml {secondaryFlowerName} tea + {syrup}ml Lime Juice + {sugar}ml Honey"
+  },
+  "recipes": {
+    "tenOneMilkTea": {
+      "name": "Ten One Milk Tea",
+      "build": "milkTea",
+      "ingredients": {
+        "adjustments": {
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "base": "Black Tea",
+        "Medium": {
+          "withoutTopping": {
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "milk": 100,
+            "sugar": 35
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "tenOneMilkGreenTea": {
+      "name": "Ten One Milk Green Tea",
+      "build": "milkTea",
+      "ingredients": {
+        "adjustments": {
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "base": "Green Tea",
+        "Medium": {
+          "withoutTopping": {
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "milk": 100,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "earlGreyMilkTea": {
+      "name": "Earl Grey Milk Tea",
+      "build": "milkTea",
+      "ingredients": {
+        "adjustments": {
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "base": "Earl Grey Tea",
+        "Medium": {
+          "withoutTopping": {
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "milk": 100,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "tieguanyinMilkTea": {
+      "name": "Tieguanyin Milk Tea",
+      "build": "milkTea",
+      "ingredients": {
+        "adjustments": {
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "base": "Tieguanyin Tea",
+        "Medium": {
+          "withoutTopping": {
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "milk": 100,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "roseMilkTea": {
+      "name": "Rose Milk Tea",
+      "build": "flowerMilkTea",
+      "ingredients": {
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "flowerName": "Rose",
+        "base": "Black Tea",
+        "Medium": {
+          "withoutTopping": {
+            "flowerTea": 75,
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "flowerTea": 50,
+            "milk": 100,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "flowerTea": 100,
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "flowerTea": 75,
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "osmanthusMilkTea": {
+      "name": "Osmanthus Milk Tea",
+      "build": "flowerMilkTea",
+      "ingredients": {
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "flowerName": "Osmanthus",
+        "base": "Black Tea",
+        "Medium": {
+          "withoutTopping": {
+            "flowerTea": 100,
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "flowerTea": 75,
+            "milk": 100,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "flowerTea": 125,
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "flowerTea": 100,
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "lavenderMilkTea": {
+      "name": "Lavender Milk Tea",
+      "build": "flowerMilkTea",
+      "ingredients": {
+        "base": "Black Tea",
+        "flowerName": "Lavender",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "flowerTea": 75,
+            "milk": 125,
+            "sugar": 30
+          },
+          "withTopping": {
+            "flowerTea": 50,
+            "milk": 100,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "flowerTea": 100,
+            "milk": 175,
+            "sugar": 35
+          },
+          "withTopping": {
+            "flowerTea": 75,
+            "milk": 125,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "matchaLatte": {
+      "name": "Matcha Latte",
+      "build": "milkTea",
+      "ingredients": {
+        "base": "Matcha Mix",
+        "adjustments": {
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "milk": 150,
+            "sugar": 25
+          },
+          "withTopping": {
+            "milk": 125,
+            "sugar": 20
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "milk": 200,
+            "sugar": 35
+          },
+          "withTopping": {
+            "milk": 150,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "chocolateMilkTea": {
+      "name": "Chocolate Milk Tea",
+      "build": "{milk}ml Milk + {sugar}ml Cane Sugar -> Add {mix}ml Cocoa Mix",
+      "ingredients": {
+        "base": "Black Tea",
+        "adjustments": {
+          "milk": "globalAdjustments.milk",
+          "sugar": "globalAdjustments.sugar",
+          "mix": 25
+        },
+        "Medium": {
+          "withoutTopping": {
+            "milk": 50,
+            "sugar": 20,
+            "mix": 150
+          },
+          "withTopping": {
+            "milk": 50,
+            "sugar": 15,
+            "mix": 125
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "milk": 75,
+            "sugar": 25,
+            "mix": 175
+          },
+          "withTopping": {
+            "milk": 50,
+            "sugar": 20,
+            "mix": 150
+          }
+        }
+      }
+    },
+    "appleBlackTea": {
+      "name": "Apple Black Tea",
+      "build": "fruitTea",
+      "ingredients": {
+        "base": "Earl Grey",
+        "syrupName": "Apple",
+        "adjustments": {
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 35,
+            "sugar": 20
+          },
+          "withTopping": {
+            "syrup": 25,
+            "sugar": 15
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 45,
+            "sugar": 30
+          },
+          "withTopping": {
+            "syrup": 35,
+            "sugar": 20
+          }
+        }
+      }
+    },
+    "grapefruitGreenTea": {
+      "name": "Grapefruit Green Tea",
+      "build": "{slices} {syrup}ml Grapefruit mix + {sugar}ml No.2 Sugar",
+      "ingredients": {
+        "base": "Green Tea",
+        "fruit": "Grapefruit slices",
+        "adjustments": {
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 110,
+            "sugar": 30
+          },
+          "withTopping": {
+            "syrup": 75,
+            "sugar": 25
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 150,
+            "sugar": 35
+          },
+          "withTopping": {
+            "syrup": 135,
+            "sugar": 30
+          }
+        }
+      }
+    },
+    "orangeGreenTea": {
+      "name": "Orange Green Tea",
+      "build": "{slices} {juice}ml Orange Juice + {syrup}ml Orange Syrup + {sugar}ml No.2 Sugar",
+      "ingredients": {
+        "base": "Green Tea",
+        "fruit": "Orange slices",
+        "adjustments": {
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar",
+          "juice": "globalAdjustments.juice"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "juice": 75,
+            "syrup": 15,
+            "sugar": 20
+          },
+          "withTopping": {
+            "juice": 50,
+            "syrup": 15,
+            "sugar": 15
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "juice": 100,
+            "syrup": 25,
+            "sugar": 25
+          },
+          "withTopping": {
+            "juice": 75,
+            "syrup": 15,
+            "sugar": 20
+          }
+        }
+      }
+    },
+    "strawberryGreenTea": {
+      "name": "Strawberry Green Tea",
+      "build": "fruitTea",
+      "ingredients": {
+        "base": "Green Tea",
+        "syrupName": "Strawberry",
+        "fruits": "Add 3 spoons of dry strawberry",
+        "adjustments": {
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 35,
+            "sugar": 15
+          },
+          "withTopping": {
+            "syrup": 25,
+            "sugar": 10
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 45,
+            "sugar": 20
+          },
+          "withTopping": {
+            "syrup": 35,
+            "sugar": 15
+          }
+        }
+      }
+    },
+    "mangoGreenTea": {
+      "name": "Mango Green Tea",
+      "build": "fruitTea",
+      "validSugarLevels": [
+        100,
+        50,
+        0
+      ],
+      "ingredients": {
+        "base": "Green Tea",
+        "syrupName": "Mango",
+        "fruits": "Add 1/2 of Mango Chunks",
+        "adjustments": {
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 35,
+            "sugar": 15
+          },
+          "withTopping": {
+            "syrup": 25,
+            "sugar": 10
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 45,
+            "sugar": 20
+          },
+          "withTopping": {
+            "syrup": 35,
+            "sugar": 15
+          }
+        }
+      }
+    },
+    "peachLemonOolong": {
+      "name": "Peach Lemon Oolong",
+      "build": "{fruits} -> {syrup}ml {syrupName} syrup + {secondarySyrup}ml {secondarySyrupName} syrup + {sugar}ml No.2 Sugar",
+      "ingredients": {
+        "base": "Oolong Tea",
+        "syrupName": "Peach Syrup",
+        "secondarySyrupName": "Lime",
+        "fruits": "Lime Slice + 1/2 Scoop of Peach Chunk ",
+        "adjustments": {
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 35,
+            "secondarySyrup": 15,
+            "sugar": 10
+          },
+          "withTopping": {
+            "syrup": 25,
+            "secondarySyrup": 10,
+            "sugar": 5
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 45,
+            "secondarySyrup": 25,
+            "sugar": 20
+          },
+          "withTopping": {
+            "syrup": 35,
+            "secondarySyrup": 15,
+            "sugar": 15
+          }
+        }
+      }
+    },
+    "oSPineappleGreenTea": {
+      "name": "OS Pineapple Green Tea",
+      "build": "{fruits} -> {flowerTea} ml OS + {syrup}ml {syrupName} syrup + {sugar}ml No.2 Sugar",
+      "ingredients": {
+        "base": "Green Tea",
+        "syrupName": "Pineapple",
+        "fruits": "Lime Slice",
+        "adjustments": {
+          "sugar": "globalAdjustments.sugar",
+          "flowerTea": "globalAdjustments.flowerTea"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 40,
+            "sugar": 15,
+            "flowerTea": 100
+          },
+          "withTopping": {
+            "syrup": 30,
+            "sugar": 10,
+            "flowerTea": 75
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 50,
+            "sugar": 25,
+            "flowerTea": 125
+          },
+          "withTopping": {
+            "syrup": 40,
+            "sugar": 20,
+            "flowerTea": 100
+          }
+        }
+      }
+    },
+    "roseHoney": {
+      "name": "Rose Honey",
+      "build": "floralTeaLemon",
+      "ingredients": {
+        "flowerType": "Rose",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "syrup": 25,
+            "sugar": 50,
+            "flowerTea": 100
+          },
+          "withTopping": {
+            "syrup": 15,
+            "sugar": 40,
+            "flowerTea": 75
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "syrup": 30,
+            "sugar": 60,
+            "flowerTea": 125
+          },
+          "withTopping": {
+            "syrup": 25,
+            "sugar": 50,
+            "flowerTea": 100
+          }
+        }
+      }
+    },
+    "roseOolong": {
+      "name": "Rose Oolong",
+      "build": "floralTea",
+      "ingredients": {
+        "base": "Oolong",
+        "flowerName": "Rose",
+        "sugarName": "Cane Sugar",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "sugar": 30,
+            "flowerTea": 75
+          },
+          "withTopping": {
+            "sugar": 25,
+            "flowerTea": 50
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "sugar": 35,
+            "flowerTea": 100
+          },
+          "withTopping": {
+            "sugar": 30,
+            "flowerTea": 75
+          }
+        }
+      }
+    },
+    "osmanthusHoney": {
+      "name": "Osmanthus Honey",
+      "build": "floralTea",
+      "ingredients": {
+        "base": "Water",
+        "flowerName": "Osmanthus",
+        "sugarName": "Honey",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "sugar": 20,
+            "flowerTea": 125
+          },
+          "withTopping": {
+            "sugar": 15,
+            "flowerTea": 100
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "sugar": 30,
+            "flowerTea": 150
+          },
+          "withTopping": {
+            "sugar": 20,
+            "flowerTea": 125
+          }
+        }
+      }
+    },
+    "osmanthusLemonHoney": {
+      "name": "Osmanthus Lemon Honey",
+      "build": "floralTeaLemon",
+      "ingredients": {
+        "flowerName": "Osmanthus",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "sugar": 50,
+            "syrup": 25,
+            "flowerTea": 125
+          },
+          "withTopping": {
+            "sugar": 40,
+            "syrup": 15,
+            "flowerTea": 100
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "sugar": 60,
+            "syrup": 30,
+            "flowerTea": 150
+          },
+          "withTopping": {
+            "sugar": 50,
+            "syrup": 25,
+            "flowerTea": 125
+          }
+        }
+      }
+    },
+    "osmanthusOolong": {
+      "name": "Osmanthus Oolong",
+      "build": "floralTea",
+      "ingredients": {
+        "base": "Oolong",
+        "flowerName": "Osmanthus",
+        "sugarName": "Cane Sugar",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "sugar": 30,
+            "flowerTea": 100
+          },
+          "withTopping": {
+            "sugar": 25,
+            "flowerTea": 75
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "sugar": 35,
+            "flowerTea": 125
+          },
+          "withTopping": {
+            "sugar": 30,
+            "flowerTea": 100
+          }
+        }
+      }
+    },
+    "lavenderForest": {
+      "name": "Lavender Forest",
+      "build": "floralTeaDouble",
+      "ingredients": {
+        "base": "Water",
+        "flowerName": "Lavender",
+        "secondaryFlowerName": "BB",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "syrup": "globalAdjustments.syrup",
+          "sugar": "globalAdjustments.sugar",
+          "secondaryFlowerTea": "globalAdjustments.secondaryFlowerTea"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "flowerTea": 100,
+            "secondaryFlowerTea": 30,
+            "syrup": 25,
+            "sugar": 50
+          },
+          "withTopping": {
+            "flowerTea": 75,
+            "secondaryFlowerTea": 25,
+            "syrup": 15,
+            "sugar": 40
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "flowerTea": 125,
+            "secondaryFlowerTea": 35,
+            "syrup": 30,
+            "sugar": 60
+          },
+          "withTopping": {
+            "flowerTea": 100,
+            "secondaryFlowerTea": 30,
+            "syrup": 25,
+            "sugar": 50
+          }
+        }
+      }
+    },
+    "lavenderOolong": {
+      "name": "Lavender Oolong",
+      "build": "floralTea",
+      "ingredients": {
+        "base": "Oolong",
+        "flowerName": "Osmanthus",
+        "sugarName": "Cane Sugar",
+        "adjustments": {
+          "flowerTea": "globalAdjustments.flowerTea",
+          "sugar": "globalAdjustments.sugar"
+        },
+        "Medium": {
+          "withoutTopping": {
+            "sugar": 30,
+            "flowerTea": 100
+          },
+          "withTopping": {
+            "sugar": 25,
+            "flowerTea": 75
+          }
+        },
+        "Large": {
+          "withoutTopping": {
+            "sugar": 35,
+            "flowerTea": 125
+          },
+          "withTopping": {
+            "sugar": 30,
+            "flowerTea": 100
+          }
+        }
+      }
+    }
+  }
+}
