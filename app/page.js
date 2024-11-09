@@ -14,7 +14,9 @@ export default function Home() {
     const [sugarLevel, setSugarLevel] = useState(100);
     const [toppings, setToppings] = useState([]);
     const [recipe, setRecipe] = useState('');
+    const [cameraOn, setCameraOn] = useState(false);
     const [loadingOCR, setLoadingOCR] = useState(false);
+    const videoRef = useRef(null);
 
     const drinkOptions = Object.keys(recipeData.recipes).map(key => ({
         value: key,
@@ -42,58 +44,83 @@ export default function Home() {
         }
     }, [drink]);
 
-    // Function to open camera, capture image, and perform OCR
+    // Turn on the camera
     const handleUseCamera = async () => {
+        setCameraOn(true);
+        setLoadingOCR(false);
+
         try {
-            setLoadingOCR(true);
-
-            // Access the camera
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            const video = document.createElement('video');
-            video.srcObject = stream;
-            await video.play();
-
-            // Capture the image when the video is ready
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-
-            // Stop the camera
-            stream.getTracks().forEach(track => track.stop());
-
-            // Perform OCR on the captured image
-            const { data: { text } } = await Tesseract.recognize(canvas, 'eng');
-            setLoadingOCR(false);
-
-            // Process OCR result
-            processOCRText(text);
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            }
         } catch (error) {
-            console.error("Error using camera or processing OCR:", error);
-            setLoadingOCR(false);
+            console.error("Camera access failed:", error);
+            setCameraOn(false);
         }
     };
 
-    // Process OCR text to auto-fill inputs
-    const processOCRText = (text) => {
-        const drinkOption = drinkOptions.find(option => text.includes(option.label));
-        if (drinkOption) setDrink(drinkOption);
+    // Capture frames continuously for OCR
+    const scanFrame = () => {
+        if (!cameraOn || loadingOCR) return;
 
-        if (text.includes("Large")) setSize("Large");
-        else if (text.includes("Medium")) setSize("Medium");
+        const canvas = document.createElement("canvas");
+        const video = videoRef.current;
 
-        if (text.includes("No Ice")) setIceLevel(0);
-        else if (text.includes("Light Ice")) setIceLevel(25);
-        else if (text.includes("Half Ice")) setIceLevel(50);
-        else if (text.includes("Less Ice")) setIceLevel(75);
-        else setIceLevel(100);
+        if (video) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        if (text.includes("No Sugar")) setSugarLevel(0);
-        else if (text.includes("Light Sugar")) setSugarLevel(25);
-        else if (text.includes("Half Sugar")) setSugarLevel(50);
-        else if (text.includes("Less Sugar")) setSugarLevel(75);
-        else setSugarLevel(100);
+            // Perform OCR on the captured frame
+            setLoadingOCR(true);
+            Tesseract.recognize(canvas, 'eng')
+                .then(({ data: { text } }) => {
+                    setLoadingOCR(false);
+
+                    // Process OCR result to see if it matches a drink
+                    processOCRText(text);
+                })
+                .catch(error => {
+                    console.error("OCR failed:", error);
+                    setLoadingOCR(false);
+                });
+        }
     };
+
+    // Process OCR text to check if it matches a drink
+    const processOCRText = (text) => {
+        const recognizedDrink = findDrinkInText(text); // function to match text with available drinks
+        if (recognizedDrink) {
+            setDrink(recognizedDrink);
+            stopCamera();
+        }
+    };
+
+    // Match text with drinks
+    const findDrinkInText = (text) => {
+        const drinkOptions = ["Drink A", "Drink B"]; // Replace with your drink names
+        return drinkOptions.find(drink => text.includes(drink));
+    };
+
+    // Stop camera
+    const stopCamera = () => {
+        setCameraOn(false);
+        const stream = videoRef.current.srcObject;
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+    };
+    useEffect(() => {
+        // Periodically scan frames when the camera is on
+        if (cameraOn) {
+            const intervalId = setInterval(scanFrame, 1000); // Scan every 1 second
+            return () => clearInterval(intervalId);
+        }
+    }, [cameraOn]);
+
 
     const calculateRecipe = () => {
         if (!drink) {
@@ -203,9 +230,33 @@ export default function Home() {
         <div>
             <h1>Boba Recipe Calculator</h1>
 
-            <button onClick={handleUseCamera} disabled={loadingOCR}>
-                {loadingOCR ? "Processing..." : "Use Camera"}
-            </button>
+            <button onClick={handleUseCamera}>Use Camera</button>
+            {cameraOn && (
+                <div style={{ position: "relative" }}>
+                    <video ref={videoRef} style={{ width: "100%" }} autoPlay muted />
+                    <button
+                        onClick={stopCamera}
+                        style={{
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            padding: "10px",
+                            backgroundColor: "red",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer"
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            )}
+
+            {loadingOCR && <p>Scanning...</p>}
+
+            {drink && <p>Found drink: {drink}</p>}
+
 
             <Select
                 options={drinkOptions}
