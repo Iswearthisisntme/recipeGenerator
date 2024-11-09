@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Select from 'react-select';
 import dynamic from 'next/dynamic';
 import Tesseract from 'tesseract.js';
