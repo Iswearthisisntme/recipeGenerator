@@ -2,22 +2,22 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Select from 'react-select';
-import dynamic from 'next/dynamic';
 import Tesseract from 'tesseract.js';
 import recipeData from '../recipes.json';
 
 export default function Home() {
-    const Select = dynamic(() => import('react-select'), { ssr: false });
-    const [drink, setDrink] = useState(null);
-    const [size, setSize] = useState('Medium');
-    const [iceLevel, setIceLevel] = useState(100);
-    const [sugarLevel, setSugarLevel] = useState(100);
-    const [toppings, setToppings] = useState([]);
-    const [recipe, setRecipe] = useState('');
     const [cameraOn, setCameraOn] = useState(false);
     const [loadingOCR, setLoadingOCR] = useState(false);
+    const [recognizedText, setRecognizedText] = useState('');
+    const [drinkFound, setDrinkFound] = useState(false);
     const videoRef = useRef(null);
 
+    const [drink, setDrink] = useState(null);
+    const [size, setSize] = useState(null);
+    const [iceLevel, setIceLevel] = useState(null);
+    const [sugarLevel, setSugarLevel] = useState(null);
+    const [toppings, setToppings] = useState([]);
+    const [recipe, setRecipe] = useState('');
     const drinkOptions = Object.keys(recipeData.recipes).map(key => ({
         value: key,
         label: recipeData.recipes[key].name
@@ -44,10 +44,10 @@ export default function Home() {
         }
     }, [drink]);
 
-    // Turn on the camera
     const handleUseCamera = async () => {
         setCameraOn(true);
         setLoadingOCR(false);
+        setDrinkFound(false);
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -61,9 +61,59 @@ export default function Home() {
         }
     };
 
-    // Capture frames continuously for OCR
+    const stopCamera = () => {
+        setCameraOn(false);
+        const stream = videoRef.current?.srcObject;
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+    };
+
+    // Process recognized text to fill variables
+    const processOCRText = (text) => {
+        const normalizedText = text.toLowerCase();
+
+        // Check for drink key in the normalized text
+        Object.keys(recipeData.recipes).forEach(key => {
+            const recipeName = recipeData.recipes[key].name.toLowerCase(); // Convert recipe name to lowercase for comparison
+            if (normalizedText.includes(recipeName)) {
+                setDrink({ value: key, label: recipeData.recipes[key].name });
+                //calculateRecipe
+                return; // Exit loop once a match is found
+            }
+        });
+
+        // Check for size
+        if (text.includes("medium")) setSize("Medium");
+        if (text.includes("large")) setSize("Large");
+
+        // Check for ice level
+        globalIceLevels.forEach(level => {
+            if (text.includes(`ice ${level}`)) setIceLevel(level);
+        });
+
+        // Check for sugar level
+        globalSugarLevels.forEach(level => {
+            if (text.includes(`sugar ${level}`)) setSugarLevel(level);
+        });
+
+        // Check for toppings
+        const detectedToppings = globalToppings.filter(topping => text.includes(topping.toLowerCase()));
+        setToppings(detectedToppings);
+    };
+    useEffect(() => {
+        if (drink && size && iceLevel !== null && sugarLevel !== null) {
+            setDrinkFound(true);
+            calculateRecipe();
+            stopCamera();
+        }
+    }, [drink, size, iceLevel, sugarLevel]); // Trigger when all these values are set
+
+
     const scanFrame = () => {
-        if (!cameraOn || loadingOCR) return;
+        console.log("scanFrame started");
+
+        if (!cameraOn || loadingOCR || drinkFound) return;
 
         const canvas = document.createElement("canvas");
         const video = videoRef.current;
@@ -74,13 +124,13 @@ export default function Home() {
             const ctx = canvas.getContext("2d");
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Perform OCR on the captured frame
             setLoadingOCR(true);
+
             Tesseract.recognize(canvas, 'eng')
                 .then(({ data: { text } }) => {
+                    console.log("OCR text:", text);
                     setLoadingOCR(false);
-
-                    // Process OCR result to see if it matches a drink
+                    setRecognizedText(text);
                     processOCRText(text);
                 })
                 .catch(error => {
@@ -90,42 +140,17 @@ export default function Home() {
         }
     };
 
-    // Process OCR text to check if it matches a drink
-    const processOCRText = (text) => {
-        const recognizedDrink = findDrinkInText(text); // function to match text with available drinks
-        if (recognizedDrink) {
-            setDrink(recognizedDrink);
-            stopCamera();
-        }
-    };
-
-    // Match text with drinks
-    const findDrinkInText = (text) => {
-        const drinkOptions = ["Drink A", "Drink B"]; // Replace with your drink names
-        return drinkOptions.find(drink => text.includes(drink));
-    };
-
-    // Stop camera
-    const stopCamera = () => {
-        setCameraOn(false);
-        const stream = videoRef.current.srcObject;
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-        }
-    };
     useEffect(() => {
-        // Periodically scan frames when the camera is on
         if (cameraOn) {
-            const intervalId = setInterval(scanFrame, 1000); // Scan every 1 second
+            const intervalId = setInterval(scanFrame, 1000);
             return () => clearInterval(intervalId);
         }
     }, [cameraOn]);
 
-
     const calculateRecipe = () => {
-        if (!drink) {
-            setRecipe("Please select a drink");
-            return;
+        if (!drink || !size || iceLevel === null || sugarLevel === null) {
+            setRecipe("Please select all required fields: drink, size, ice level, and sugar level.");
+            return; // Exit the function if any required field is missing
         }
 
         const selectedDrink = recipeData.recipes[drink.value];
@@ -230,7 +255,7 @@ export default function Home() {
         <div>
             <h1>Boba Recipe Calculator</h1>
 
-            <button onClick={handleUseCamera}>Use Camera</button>
+            <button onClick={handleUseCamera}>Open Camera</button>
             {cameraOn && (
                 <div style={{ position: "relative" }}>
                     <video ref={videoRef} style={{ width: "100%" }} autoPlay muted />
@@ -253,11 +278,6 @@ export default function Home() {
                 </div>
             )}
 
-            {loadingOCR && <p>Scanning...</p>}
-
-            {drink && <p>Found drink: {drink}</p>}
-
-
             <Select
                 options={drinkOptions}
                 value={drink}
@@ -269,13 +289,15 @@ export default function Home() {
                 isSearchable
             />
 
-            <select value={size} onChange={(e) => setSize(e.target.value)}>
+            <select value={size || ""} onChange={(e) => setSize(e.target.value)}>
+                <option value="" disabled>Select size</option>
                 <option value="Medium">Medium</option>
                 <option value="Large">Large</option>
             </select>
 
             {availableIceLevels.length > 0 && (
-                <select value={iceLevel} onChange={(e) => setIceLevel(Number(e.target.value))}>
+                <select value={iceLevel !==null ? iceLevel : ""} onChange={(e) => setIceLevel(Number(e.target.value))}>
+                    <option value="" disabled>Select ice level</option>
                     {availableIceLevels.map(level => (
                         <option key={level} value={level}>Ice {level}%</option>
                     ))}
@@ -283,7 +305,8 @@ export default function Home() {
             )}
 
             {availableSugarLevels.length > 0 && (
-                <select value={sugarLevel} onChange={(e) => setSugarLevel(Number(e.target.value))}>
+                <select value={sugarLevel !== null ? sugarLevel : ""} onChange={(e) => setSugarLevel(Number(e.target.value))}>
+                    <option value="" disabled>Select sugar level</option>
                     {availableSugarLevels.map(level => (
                         <option key={level} value={level}>Sugar {level}%</option>
                     ))}
@@ -311,9 +334,20 @@ export default function Home() {
                 </>
             )}
 
-            <button onClick={calculateRecipe}>Calculate Recipe</button>
+            {loadingOCR && <p>Scanning...</p>}
 
+            {recognizedText && (
+                <div>
+                    <h3>Recognized Text:</h3>
+                    <p>{recognizedText}</p>
+                </div>
+            )}
+
+
+            <button onClick={calculateRecipe}>Calculate Recipe</button>
             {recipe && <p>{recipe}</p>}
+
+
         </div>
     );
 }
