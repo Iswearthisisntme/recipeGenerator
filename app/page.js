@@ -31,6 +31,22 @@ export default function Home() {
     const [availableSugarLevels, setAvailableSugarLevels] = useState(globalSugarLevels);
     const [availableToppings, setAvailableToppings] = useState(globalToppings);
 
+    const iceLevelMappings = {
+        "no ice": 0,
+        "light ice": 25,
+        "half ice": 50,
+        "less ice": 75,
+        "regular ice": 100
+    };
+
+    const sugarLevelMappings = {
+        "no sugar": 0,
+        "light sugar": 25,
+        "half sugar": 50,
+        "less sugar": 75,
+        "regular sugar": 100
+    };
+
     useEffect(() => {
         if (drink) {
             const selectedRecipe = recipeData.recipes[drink.value];
@@ -50,7 +66,7 @@ export default function Home() {
         setDrinkFound(false);
 
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode: { exact: "environment" } } });
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
                 videoRef.current.play();
@@ -87,14 +103,18 @@ export default function Home() {
         if (text.includes("medium")) setSize("Medium");
         if (text.includes("large")) setSize("Large");
 
-        // Check for ice level
-        globalIceLevels.forEach(level => {
-            if (text.includes(`ice ${level}`)) setIceLevel(level);
+        // Check for ice level using mapped phrases
+        Object.keys(iceLevelMappings).forEach(label => {
+            if (normalizedText.includes(label)) {
+                setIceLevel(iceLevelMappings[label]);
+            }
         });
 
-        // Check for sugar level
-        globalSugarLevels.forEach(level => {
-            if (text.includes(`sugar ${level}`)) setSugarLevel(level);
+        // Check for sugar level using mapped phrases
+        Object.keys(sugarLevelMappings).forEach(label => {
+            if (normalizedText.includes(label)) {
+                setSugarLevel(sugarLevelMappings[label]);
+            }
         });
 
         // Check for toppings
