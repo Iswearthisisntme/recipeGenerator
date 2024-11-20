@@ -272,13 +272,59 @@ export default function Home() {
     };
 
     return (
-        <div>
-            <h1>Boba Recipe Calculator</h1>
+        <div
+            style={{
+                fontFamily: "Arial, sans-serif",
+                maxWidth: "600px",
+                margin: "20px auto",
+                padding: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                backgroundColor: "#f9f9f9",
+            }}
+        >
+            <h1
+                style={{
+                    textAlign: "center",
+                    fontSize: "24px",
+                    color: "#333",
+                    marginBottom: "20px",
+                }}
+            >
+                Boba Recipe Calculator
+            </h1>
 
-            <button onClick={handleUseCamera}>Open Camera</button>
+            <button
+                onClick={handleUseCamera}
+                style={{
+                    display: "block",
+                    width: "100%",
+                    padding: "10px",
+                    backgroundColor: "#007BFF",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    marginBottom: "20px",
+                }}
+            >
+                Open Camera
+            </button>
+
             {cameraOn && (
                 <div style={{ position: "relative" }}>
-                    <video ref={videoRef} style={{ width: "100%" }} autoPlay muted />
+                    <video
+                        ref={videoRef}
+                        style={{
+                            width: "100%",
+                            borderRadius: "8px",
+                            marginBottom: "10px",
+                        }}
+                        autoPlay
+                        muted
+                    />
                     <button
                         onClick={stopCamera}
                         style={{
@@ -286,11 +332,11 @@ export default function Home() {
                             top: "10px",
                             right: "10px",
                             padding: "10px",
-                            backgroundColor: "red",
-                            color: "white",
+                            backgroundColor: "#dc3545",
+                            color: "#fff",
                             border: "none",
                             borderRadius: "5px",
-                            cursor: "pointer"
+                            cursor: "pointer",
                         }}
                     >
                         Cancel
@@ -298,76 +344,216 @@ export default function Home() {
                 </div>
             )}
 
-            <Select
-                options={drinkOptions}
-                value={drink}
-                onChange={(selected) => {
-                    setDrink(selected);
-                    setToppings([]);
-                }}
-                placeholder="Select a drink"
-                isSearchable
-            />
+            <div style={{ marginBottom: "20px" }}>
+                <Select
+                    options={drinkOptions}
+                    value={drink}
+                    onChange={(selected) => {
+                        setDrink(selected);
+                        setToppings([]);
+                    }}
+                    placeholder="Select a drink"
+                    isSearchable
+                    styles={{
+                        control: (provided) => ({
+                            ...provided,
+                            borderRadius: "5px",
+                            padding: "5px",
+                        }),
+                    }}
+                />
+            </div>
 
-            <select value={size || ""} onChange={(e) => setSize(e.target.value)}>
-                <option value="" disabled>Select size</option>
-                <option value="Medium">Medium</option>
-                <option value="Large">Large</option>
-            </select>
+            <div style={{ marginBottom: "20px" }}>
+                <select
+                    value={size || ""}
+                    onChange={(e) => setSize(e.target.value)}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        border: "1px solid #ddd",
+                        marginBottom: "10px",
+                    }}
+                >
+                    <option value="" disabled>
+                        Select size
+                    </option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                </select>
+            </div>
 
             {availableIceLevels.length > 0 && (
-                <select value={iceLevel !==null ? iceLevel : ""} onChange={(e) => setIceLevel(Number(e.target.value))}>
-                    <option value="" disabled>Select ice level</option>
-                    {availableIceLevels.map(level => (
-                        <option key={level} value={level}>Ice {level}%</option>
-                    ))}
-                </select>
+                <div style={{ marginBottom: "20px" }}>
+                    <select
+                        value={iceLevel !== null ? iceLevel : ""}
+                        onChange={(e) => setIceLevel(Number(e.target.value))}
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            borderRadius: "5px",
+                            border: "1px solid #ddd",
+                            marginBottom: "10px",
+                        }}
+                    >
+                        <option value="" disabled>
+                            Select ice level
+                        </option>
+                        {availableIceLevels.map((level) => (
+                            <option key={level} value={level}>
+                                Ice {level}%
+                            </option>
+                        ))}
+                    </select>
+                </div>
             )}
 
             {availableSugarLevels.length > 0 && (
-                <select value={sugarLevel !== null ? sugarLevel : ""} onChange={(e) => setSugarLevel(Number(e.target.value))}>
-                    <option value="" disabled>Select sugar level</option>
-                    {availableSugarLevels.map(level => (
-                        <option key={level} value={level}>Sugar {level}%</option>
-                    ))}
-                </select>
+                <div style={{ marginBottom: "20px" }}>
+                    <select
+                        value={sugarLevel !== null ? sugarLevel : ""}
+                        onChange={(e) => setSugarLevel(Number(e.target.value))}
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            borderRadius: "5px",
+                            border: "1px solid #ddd",
+                            marginBottom: "10px",
+                        }}
+                    >
+                        <option value="" disabled>
+                            Select sugar level
+                        </option>
+                        {availableSugarLevels.map((level) => (
+                            <option key={level} value={level}>
+                                Sugar {level}%
+                            </option>
+                        ))}
+                    </select>
+                </div>
             )}
 
             {availableToppings.length > 0 && (
                 <>
                     <Select
-                        options={availableToppings.map(t => ({value: t, label: t}))}
-                        value={toppings[0] ? {value: toppings[0], label: toppings[0]} : null}
-                        onChange={(selected) => setToppings([selected ? selected.value : null, toppings[1] || null].filter(Boolean))}
+                        options={availableToppings.map((t) => ({
+                            value: t,
+                            label: t,
+                        }))}
+                        value={
+                            toppings[0]
+                            ? { value: toppings[0], label: toppings[0] }
+                            : null
+                        }
+                        onChange={(selected) =>
+                            setToppings(
+                                [selected ? selected.value : null, toppings[1] || null]
+                                    .filter(Boolean)
+                            )
+                        }
                         placeholder="Choose topping"
                         isClearable
+                        styles={{
+                            control: (provided) => ({
+                                ...provided,
+                                borderRadius: "5px",
+                                padding: "5px",
+                                marginBottom: "10px",
+                            }),
+                        }}
                     />
                     {toppings[0] && (
                         <Select
-                            options={availableToppings.filter(t => t !== toppings[0]).map(t => ({value: t, label: t}))}
-                            value={toppings[1] ? {value: toppings[1], label: toppings[1]} : null}
-                            onChange={(selected) => setToppings([toppings[0], selected ? selected.value : null].filter(Boolean))}
+                            options={availableToppings
+                                .filter((t) => t !== toppings[0])
+                                .map((t) => ({ value: t, label: t }))}
+                            value={
+                                toppings[1]
+                                ? { value: toppings[1], label: toppings[1] }
+                                : null
+                            }
+                            onChange={(selected) =>
+                                setToppings(
+                                    [toppings[0], selected ? selected.value : null]
+                                        .filter(Boolean)
+                                )
+                            }
                             placeholder="Choose second topping"
                             isClearable
+                            styles={{
+                                control: (provided) => ({
+                                    ...provided,
+                                    borderRadius: "5px",
+                                    padding: "5px",
+                                }),
+                            }}
                         />
                     )}
                 </>
             )}
 
-            {loadingOCR && <p>Scanning...</p>}
+            {loadingOCR && (
+                <p
+                    style={{
+                        color: "#007BFF",
+                        fontWeight: "bold",
+                        textAlign: "center",
+                    }}
+                >
+                    Scanning...
+                </p>
+            )}
 
             {recognizedText && (
                 <div>
-                    <h3>Recognized Text:</h3>
-                    <p>{recognizedText}</p>
+                    <h3
+                        style={{
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            color: "#333",
+                            marginBottom: "10px",
+                        }}
+                    >
+                        Recognized Text:
+                    </h3>
+                    <p style={{ color: "#555" }}>{recognizedText}</p>
                 </div>
             )}
 
+            <button
+                onClick={calculateRecipe}
+                style={{
+                    display: "block",
+                    width: "100%",
+                    padding: "10px",
+                    backgroundColor: "#28a745",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    marginTop: "20px",
+                }}
+            >
+                Calculate Recipe
+            </button>
 
-            <button onClick={calculateRecipe}>Calculate Recipe</button>
-            {recipe && <p>{recipe}</p>}
-
-
+            {recipe && (
+                <p
+                    style={{
+                        marginTop: "20px",
+                        padding: "10px",
+                        border: "1px solid #ddd",
+                        borderRadius: "5px",
+                        backgroundColor: "#e9ecef",
+                        color: "#333",
+                    }}
+                >
+                    {recipe}
+                </p>
+            )}
         </div>
+
     );
 }
